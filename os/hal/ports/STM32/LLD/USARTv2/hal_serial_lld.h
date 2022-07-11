@@ -329,9 +329,9 @@ typedef struct {
   /* Output queue.*/                                                        \
   output_queue_t            oqueue;                                         \
   /* Input circular buffer.*/                                               \
-  uint8_t                   ib[SERIAL_BUFFERS_SIZE];                        \
+  uint8_t                   ib[SERIAL_RX_BUFFERS_SIZE];                     \
   /* Output circular buffer.*/                                              \
-  uint8_t                   ob[SERIAL_BUFFERS_SIZE];                        \
+  uint8_t                   ob[SERIAL_TX_BUFFERS_SIZE];                     \
   /* End of the mandatory fields.*/                                         \
   /* Pointer to the USART registers block.*/                                \
   USART_TypeDef             *usart;                                         \
@@ -388,6 +388,8 @@ extern "C" {
   void sd_lld_init(void);
   void sd_lld_start(SerialDriver *sdp, const SerialConfig *config);
   void sd_lld_stop(SerialDriver *sdp);
+  void sd_lld_setbaudrate(SerialDriver *sdp, uint32_t baud);
+  uint32_t sd_lld_getbaudrate(SerialDriver *sdp);
 #ifdef __cplusplus
 }
 #endif

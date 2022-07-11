@@ -66,8 +66,11 @@
  * @note    The default is 16 bytes for both the transmission and receive
  *          buffers.
  */
-#if !defined(SERIAL_BUFFERS_SIZE) || defined(__DOXYGEN__)
-#define SERIAL_BUFFERS_SIZE         16
+#if !defined(SERIAL_RX_BUFFERS_SIZE) || defined(__DOXYGEN__)
+#define SERIAL_RX_BUFFERS_SIZE         16
+#endif
+#if !defined(SERIAL_TX_BUFFERS_SIZE) || defined(__DOXYGEN__)
+#define SERIAL_TX_BUFFERS_SIZE         16
 #endif
 /** @} */
 
@@ -258,6 +261,9 @@ struct SerialDriver {
  */
 #define sdAsynchronousRead(sdp, b, n)                                       \
   iqReadTimeout(&(sdp)->iqueue, b, n, TIME_IMMEDIATE)
+
+#define sdSetBaudrate(sdp, baud)  sd_lld_setbaudrate(sdp, baud)
+#define sdGetBaudrate(sdp)        sd_lld_getbaudrate(sdp, baud)
 /** @} */
 
 /*===========================================================================*/
