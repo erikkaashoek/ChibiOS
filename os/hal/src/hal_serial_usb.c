@@ -402,11 +402,14 @@ void sduDataTransmitted(USBDriver *usbp, usbep_t ep) {
        so it is safe to transmit without a check.*/
     usbStartTransmitI(usbp, ep, buf, n);
   }
-  else if (usbp->epc[ep]->in_state->txsize == usbp->epc[ep]->in_maxsize) {
+  else if ((usbp->epc[ep]->in_state->txsize > 0U) &&
+           ((usbp->epc[ep]->in_state->txsize &
+            ((size_t)usbp->epc[ep]->in_maxsize - 1U)) == 0U)) {
     /* Transmit zero sized packet in case the last one has maximum allowed
        size. Otherwise the recipient may expect more data coming soon and
        not return buffered data to app. See section 5.8.3 Bulk Transfer
-       Packet Size Constraints of the USB Specification document.*/
+       Packet Size Constraints of the USB Specification document.
+       Backported from ChibiOS 21.11: any multiple of the packet size.*/
     usbStartTransmitI(usbp, ep, NULL, 0);
 
   }
